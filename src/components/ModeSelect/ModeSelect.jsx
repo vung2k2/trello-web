@@ -13,19 +13,12 @@ const ModeSelect = () => {
 
   const handleChange = (event) => {
     setMode(event.target.value);
-    console.log(event.target.value);
   };
 
   return (
-    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+    <FormControl size="small" sx={{ minWidth: "120px" }}>
       <InputLabel id="select-mode-label">Mode</InputLabel>
-      <Select
-        labelId="select-mode-label"
-        id="select-mode"
-        value={mode}
-        label="mode"
-        onChange={handleChange}
-      >
+      <Select labelId="select-mode-label" id="select-mode" value={mode} label="mode" onChange={handleChange}>
         <MenuItem value="light">
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <LightModeIcon fontSize="small" /> Light

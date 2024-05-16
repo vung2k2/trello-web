@@ -1,11 +1,10 @@
 import { cyan, deepOrange, orange, teal } from "@mui/material/colors";
-import { createTheme } from "@mui/material/styles";
 import { experimental_extendTheme as extendTheme } from "@mui/material/styles";
 
 const theme = extendTheme({
   trello: {
-    appBarHeight: "48px",
-    boarBarHeight: "48px",
+    appBarHeight: "58px",
+    boarBarHeight: "60px",
   },
   colorSchemes: {
     light: {
@@ -18,6 +17,55 @@ const theme = extendTheme({
       palette: {
         primary: cyan,
         secondary: orange,
+      },
+    },
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          "*::-webkit-scrollbar": {
+            width: "8px",
+            height: "8px",
+          },
+          "*::-webkit-scrollbar-thumb": {
+            backgroundColor: "#bdc3c7",
+            borderRadius: "8px",
+          },
+          "*::-webkit-scrollbar-thumb:hover": {
+            backgroundColor: "#00b894",
+          },
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: "none",
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: ({ theme }) => {
+          return {
+            color: theme.palette.primary.main,
+            fontSize: "0.875rem",
+            ".MuiOutlinedInput-notchedOutline": { borderColor: theme.palette.primary.light },
+            "&:hover": { ".MuiOutlinedInput-notchedOutline": { borderColor: theme.palette.primary.light } },
+            // "& fieldset": { borderWidth: "1px !important" }, //Xóa bôi đậm viền khi click vào
+          };
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: ({ theme }) => {
+          return {
+            color: theme.palette.primary.main,
+            fontSize: "0.875rem",
+          };
+        },
       },
     },
   },
