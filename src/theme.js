@@ -1,25 +1,25 @@
-import { cyan, deepOrange, orange, teal } from "@mui/material/colors";
+// import { cyan, deepOrange, orange, teal } from "@mui/material/colors";
 import { experimental_extendTheme as extendTheme } from "@mui/material/styles";
 
 const theme = extendTheme({
   trello: {
     appBarHeight: "58px",
-    boarBarHeight: "60px",
+    boardBarHeight: "60px",
   },
-  colorSchemes: {
-    light: {
-      palette: {
-        primary: teal,
-        secondary: deepOrange,
-      },
-    },
-    dark: {
-      palette: {
-        primary: cyan,
-        secondary: orange,
-      },
-    },
-  },
+  // colorSchemes: {
+  //   light: {
+  //     palette: {
+  //       primary: teal,
+  //       secondary: deepOrange,
+  //     },
+  //   },
+  //   dark: {
+  //     palette: {
+  //       primary: cyan,
+  //       secondary: orange,
+  //     },
+  //   },
+  // },
   components: {
     MuiCssBaseline: {
       styleOverrides: {
@@ -29,11 +29,11 @@ const theme = extendTheme({
             height: "8px",
           },
           "*::-webkit-scrollbar-thumb": {
-            backgroundColor: "#bdc3c7",
+            backgroundColor: "#dcdde1",
             borderRadius: "8px",
           },
           "*::-webkit-scrollbar-thumb:hover": {
-            backgroundColor: "#00b894",
+            backgroundColor: "white",
           },
         },
       },
@@ -47,12 +47,12 @@ const theme = extendTheme({
     },
     MuiOutlinedInput: {
       styleOverrides: {
-        root: ({ theme }) => {
+        root: () => {
           return {
-            color: theme.palette.primary.main,
+            // // color: theme.palette.primary.main,
             fontSize: "0.875rem",
-            ".MuiOutlinedInput-notchedOutline": { borderColor: theme.palette.primary.light },
-            "&:hover": { ".MuiOutlinedInput-notchedOutline": { borderColor: theme.palette.primary.light } },
+            // ".MuiOutlinedInput-notchedOutline": { borderColor: theme.palette.primary.light },
+            // "&:hover": { ".MuiOutlinedInput-notchedOutline": { borderColor: theme.palette.primary.light } },
             // "& fieldset": { borderWidth: "1px !important" }, //Xóa bôi đậm viền khi click vào
           };
         },
@@ -60,9 +60,9 @@ const theme = extendTheme({
     },
     MuiInputLabel: {
       styleOverrides: {
-        root: ({ theme }) => {
+        root: () => {
           return {
-            color: theme.palette.primary.main,
+            // color: theme.palette.primary.main,
             fontSize: "0.875rem",
           };
         },
