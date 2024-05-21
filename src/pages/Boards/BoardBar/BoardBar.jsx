@@ -53,7 +53,10 @@ const BoardBar = () => {
         >
           Invite
         </Button>
-        <AvatarGroup max={5} sx={{ "& .MuiAvatar-root": { width: "34px", height: "34px", fontSize: "16px" } }}>
+        <AvatarGroup
+          max={5}
+          sx={{ "& .MuiAvatar-root": { width: "34px", height: "34px", fontSize: "16px", cursor: "pointer" } }}
+        >
           <Tooltip title="trungquandev">
             <Avatar
               alt="trungquandev"
