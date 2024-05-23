@@ -10,8 +10,9 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import { capitalizeFirstLetter } from "../../../utils/formatter";
 
-const BoardBar = () => {
+const BoardBar = ({ board }) => {
   const menuStyle = {
     color: "white",
     bgcolor: "transparent",
@@ -38,8 +39,8 @@ const BoardBar = () => {
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-        <Chip sx={menuStyle} icon={<DashboardIcon />} label="LUONGVUNNG Stack Board" clickable />
-        <Chip sx={menuStyle} icon={<VpnLockIcon />} label="Public/Private Workspace" clickable />
+        <Chip sx={menuStyle} icon={<DashboardIcon />} label={board?.title} clickable />
+        <Chip sx={menuStyle} icon={<VpnLockIcon />} label={capitalizeFirstLetter(board?.type)} clickable />
         <Chip sx={menuStyle} icon={<AddToDriveIcon />} label="Add To Google Drive" clickable />
         <Chip sx={menuStyle} icon={<BoltIcon />} label="Automation" clickable />
         <Chip sx={menuStyle} icon={<FilterAltIcon />} label="Filters" clickable />
