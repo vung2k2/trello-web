@@ -12,12 +12,17 @@ import {
   DragOverlay,
   defaultDropAnimationSideEffects,
   closestCorners,
+  closestCenter,
+  rectIntersection,
+  pointerWithin,
+  getFirstCollision,
 } from "@dnd-kit/core";
-import { cloneDeep } from "lodash";
-import { useEffect, useState } from "react";
+import { cloneDeep, isEmpty } from "lodash";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { arrayMove } from "@dnd-kit/sortable";
 import Card from "./ListColumns/Column/ListCards/Card/Card";
 import Column from "./ListColumns/Column/Column";
+import { generatePlaceholderCard } from "../../../utils/formatter";
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: "ACTIVE_DRAG_ITEM_TYPE_COLUMN",
@@ -42,9 +47,10 @@ const BoardContent = ({ board }) => {
   const [activeDragItemId, setActiveDragItemId] = useState(null);
   const [activeDragItemType, setActiveDragItemType] = useState(null);
   const [activeDragItemData, setActiveDragItemData] = useState(null);
+
   const [oldColumnWhenDraggingCard, setOldColumnWhenDraggingCard] =
     useState(null);
-
+  const lastOverId = useRef(null);
   useEffect(() => {
     setOrderedColumns(mapOrder(board?.columns, board?.columnOrderIds, "_id"));
   }, [board]);
@@ -106,6 +112,9 @@ const BoardContent = ({ board }) => {
         nextActiveColumn.cards = nextActiveColumn.cards.filter(
           (card) => card._id !== activeDraggingCardId
         );
+        if (isEmpty(nextActiveColumn.cards)) {
+          nextActiveColumn.cards = [generatePlaceholderCard(nextActiveColumn)];
+        }
         nextActiveColumn.cardOrderIds = nextActiveColumn.cards.map(
           (card) => card._id
         );
@@ -119,9 +128,13 @@ const BoardContent = ({ board }) => {
           0,
           activeDraggingCardData
         );
+        nextOverColumn.cards = nextOverColumn.cards.filter(
+          (card) => !card.FE_PlaceholderCard
+        );
         nextOverColumn.cardOrderIds = nextOverColumn.cards.map(
           (card) => card._id
         );
+        console.log(nextOverColumn);
       }
       return nextColumns;
     });
@@ -237,12 +250,48 @@ const BoardContent = ({ board }) => {
     }),
   };
 
+  const collisionDetectionStrategy = useCallback(
+    (args) => {
+      if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) {
+        return closestCorners({ ...args });
+      }
+      const pointerIntersections = pointerWithin(args);
+      const intersections =
+        pointerIntersections.length > 0
+          ? pointerIntersections
+          : rectIntersection(args);
+      let overId = getFirstCollision(intersections, "id");
+      if (overId) {
+        const checkColumn = orderedColumns.find(
+          (column) => column._id === overId
+        );
+        if (checkColumn) {
+          overId = closestCenter({
+            ...args,
+            droppableContainers: args.droppableContainers.filter(
+              (container) => {
+                return (
+                  container.id !== overId &&
+                  checkColumn?.cardOrderIds?.includes(container.id)
+                );
+              }
+            ),
+          })[0]?.id;
+        }
+        lastOverId.current = overId;
+        return [{ id: overId }];
+      }
+      return (lastOverId.current = overId);
+    },
+    [activeDragItemType]
+  );
   return (
     <DndContext
       onDragEnd={handleDragEnd}
       onDragOver={handleDragOver}
       onDragStart={handleDragStart}
-      collisionDetection={closestCorners}
+      // collisionDetection={closestCorners}
+      collisionDetection={collisionDetectionStrategy}
       sensors={sensors}
     >
       <Box
